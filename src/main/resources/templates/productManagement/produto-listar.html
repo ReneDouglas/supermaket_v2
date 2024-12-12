@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Produtos</title>
+    <!-- Bootstrap via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Menu de navegação -->
+    <nav th:replace="~{fragments/menu :: menu}"></nav>
+
+    <div class="container shadow p-4 bg-white mx-auto mt-5 w-75">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Preço de Custo</th>
+                <th scope="col">Estoque</th>
+                <th scope="col">Data de Validade</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="produto : ${produtos}">
+                <td th:text="${produto.id}"></td>
+                <td th:text="${produto.nome}"></td>
+                <td th:text="${produto.descricao}"></td>
+                <td th:text="${#numbers.formatCurrency(produto.precoDeCusto)}"></td>
+                <td th:text="${produto.estoque}"></td>
+                <td th:text="${#temporals.format(produto.dataValidade, 'dd/MM/yyyy')}"></td>
+                <td th:text="${produto.categoria.nome}"></td>
+                <td>
+                    <a class="btn btn-primary" th:href="@{/produtos(id=${produto.id})}">Editar</a>
+                    <form th:action="@{/produtos/{id}/deletar(id=${produto.id})}" th:method="delete">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

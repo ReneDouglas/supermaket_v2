@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto</title>
+    <!-- Bootstrap via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+<body class="bg-light">
+    <!-- Menu de navegação -->
+    <nav th:replace="~{fragments/menu :: menu}"></nav>
+
+    <div class="container shadow p-4 bg-white mx-auto mt-5 w-50">
+        <div class="card-body">
+            <h1 class="mb-4">Cadastro de Produto</h1>
+            <form th:action="${produto.id == null} ? @{/produtos/cadastrar} : @{/produtos/editar}"
+                  th:object="${produto}"
+                  th:method="${produto.id == null} ? 'post' : 'put'">
+                <!-- Campo Nome -->
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome do Produto</label>
+                    <input type="text" class="form-control" id="nome" th:field="*{nome}"
+                           placeholder="Digite o nome do produto">
+                    <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{nome}"></p>
+                </div>
+
+                <!-- Campo Descrição -->
+                <div class="mb-3">
+                    <label for="descricaoProduto" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="descricaoProduto" th:field="*{descricao}" rows="3"
+                              placeholder="Digite a descrição do produto"></textarea>
+                    <p th:if="${#fields.hasErrors('nome')}" th:errorclass="error" th:errors="*{descricao}"></p>
+                </div>
+
+                <!-- Campo Preço de Custo -->
+                <div class="mb-3">
+                    <label for="precoCusto" class="form-label">Preço de Custo (R$)</label>
+                    <input type="number" class="form-control" id="precoCusto" th:field="*{precoDeCusto}"
+                           placeholder="Digite o preço de custo" step="0.01">
+                </div>
+
+                <!-- Campo Estoque -->
+                <div class="mb-3">
+                    <label for="estoqueProduto" class="form-label">Estoque</label>
+                    <input type="number" class="form-control" id="estoqueProduto" th:field="*{estoque}"
+                           placeholder="Digite a quantidade em estoque">
+                </div>
+
+                <!-- Campo Categoria -->
+<!--                <div class="mb-3">-->
+<!--                    <label for="categoria" class="form-label">Categoria</label>-->
+<!--                    <select id="categoria" class="form-select" th:field="*{categoria.id}">-->
+<!--                        <option th:each="categoria : ${categorias}"-->
+<!--                                th:value="${categoria.id}"-->
+<!--                                th:text="${categoria.nome}"-->
+<!--                                th:selected="${produto.id != null ? produto.categoria.id == categoria.id : false}"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
+
+                <div class="mb-3">
+                    <label for="dataValidade" class="form-label">Data de Validade</label>
+                    <input type="date" class="form-control" id="dataValidade" th:name="dataValidade" th:value="${produto.id != null ? #temporals.format(produto.dataValidade, 'yyyy-MM-dd') : ''}">
+                </div>
+
+                <!-- Campo ID. É necessário enviar o ID no form caso seja uma alteração -->
+                <input type="hidden" th:field="*{id}">
+
+                <!-- Botão de envio -->
+                <th:block th:if="${produto.id == null}">
+                    <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
+                </th:block>
+                <th:block th:unless="${produto.id == null}">
+                    <button type="submit" class="btn btn-primary">Atualizar Produto</button>
+                </th:block>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS via CDN (opcional, mas recomendado para funcionalidade JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Exemplo AJAX com Thymeleaf Fragment</title>
+</head>
+<body>
+    <h2>Formulário de Cadastro</h2>
+    <form id="userForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <button type="button" onclick="submitForm()">Enviar</button>
+    </form>
+
+    <!-- Div que será substituída pelo fragmento -->
+    <div id="result" style="margin-top:20px;"></div>
+
+    <script>
+        function submitForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            fetch('/ajax/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao enviar os dados');
+                    }
+                    return response.text(); // Receber o HTML como texto
+                })
+                .then(html => {
+                    // Substitui o conteúdo do div#result pelo fragmento retornado
+                    document.getElementById('result').innerHTML = html;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = `<p>${error.message}</p>`;
+                });
+        }
+    </script>
+</body>
+</html>

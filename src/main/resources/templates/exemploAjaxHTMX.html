@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Exemplo AJAX com Thymeleaf Fragment</title>
+    <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h2>Formulário de Cadastro</h2>
+    <form id="userForm" hx-post="/ajax/submit" hx-target="#result" hx-swap="outerHTML">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+
+        <button type="submit" >Enviar</button>
+    </form>
+
+    <!-- Div que será substituída pelo fragmento -->
+    <div id="result" style="margin-top:20px;"></div>
+
+</body>
+</html>

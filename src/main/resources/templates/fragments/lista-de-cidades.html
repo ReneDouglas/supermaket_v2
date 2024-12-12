@@ -1,0 +1,7 @@
+<div th:fragment="cidades" id="cidades" class="row mt-4">
+    <div class="col">
+        <div class="list-group" th:each="cidade : ${cidades}">
+            <a href="#" class="list-group-item list-group-item-action" th:text="${cidade.nome}"></a>
+        </div>
+    </div>
+</div>
